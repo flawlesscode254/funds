@@ -41,7 +41,7 @@ app.post("/ussd", async (req, res) => {
     if (Number(merchantCode) > 0 && Number(amount) > 0) {
       response = `CON Looking for existing merchant`;
       const existingMerchant = await merchantRecord.findOne({
-        merchantID: text,
+        merchantID: merchantCode,
       });
       if (existingMerchant) {
         const newRecord = await new recordModel({
