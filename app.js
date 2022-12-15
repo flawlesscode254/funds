@@ -48,26 +48,24 @@ app.post("/ussd", async (req, res) => {
       if (existingMerchant) {
         response = `CON Making request`;
         const getData = await fetch(
-          "https://jsonplaceholder.typicode.com/todos/1"
+          "https://rhonebackend-production.up.railway.app/api/v1/pay",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              phone: phoneNumber,
+              amount: amount,
+              merchant_code: merchantCode,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
         const json = await getData.json();
         response = `CON Finishing up`;
         if (json) {
           response = `END Completed`;
         }
-        // fetch("https://rhonebackend-production.up.railway.app/api/v1/pay", {
-        //   method: "POST",
-        //   body: JSON.stringify({
-        //     phone: phoneNumber,
-        //     amount: amount,
-        //     merchant_code: merchantCode,
-        //   }),
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        // }).then(() => {
-        //   response = `END Completed`;
-        // });
       } else {
         response = `END Merchant was not found!!`;
       }
