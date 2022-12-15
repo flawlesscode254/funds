@@ -22,8 +22,7 @@ app.post("/ussd", async (req, res) => {
   // Read the variables sent via POST from our API
   const { sessionId, serviceCode, phoneNumber, text } = req.body;
 
-  res.set("Content-Type: text/plain");
-  res.send("END Completed")
+  let response = "";
 
   const newRecord = await new recordModel({
     sessionId,
@@ -31,7 +30,12 @@ app.post("/ussd", async (req, res) => {
     phoneNumber,
     text,
   });
-  await newRecord.save()
+  response = `CON Testing`;
+  await newRecord.save();
+  response = `END Completed`;
+
+  res.set("Content-Type: text/plain");
+  res.send(response);
 });
 
 app.get("/", (req, res) => {
