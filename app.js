@@ -19,6 +19,29 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+const getAccessToken = async (req, res, next) => {
+  const key = "33LK2IISJhwPoR8RpajMXxdWZWCgA5tu";
+  const secret = "M7goD385g6XvfYEW";
+  const auth = new Buffer.from(`${key}:${secret}`).toString("base64");
+
+  await axios
+    .get(
+      ` https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials`,
+      {
+        headers: {
+          authorization: `Basic ${auth}`,
+        },
+      }
+    )
+    .then((res) => {
+      access_token = res.data.access_token;
+      next();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 app.post("/ussd", async (req, res) => {
   const { sessionId, serviceCode, phoneNumber, text } = req.body;
 
@@ -44,15 +67,47 @@ app.post("/ussd", async (req, res) => {
         merchantID: merchantCode,
       });
       if (existingMerchant) {
-        const newRecord = await new recordModel({
-          sessionId,
-          serviceCode,
-          phoneNumber,
-          text: amount,
-        });
-        response = `CON Saving request`;
-        await newRecord.save();
-        response = `END Completed`;
+        response = `CON Initiating push`;
+        const date = new Date();
+        const timestamp =
+          date.getFullYear() +
+          ("0" + (date.getMonth() + 1)).slice(-2) +
+          ("0" + date.getDate()).slice(-2) +
+          ("0" + date.getHours()).slice(-2) +
+          ("0" + date.getMinutes()).slice(-2) +
+          ("0" + date.getSeconds()).slice(-2);
+
+        await axios
+          .post(
+            ` https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest`,
+            {
+              BusinessShortCode: 174379,
+              Password:
+                "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjIxMjE1MTcyODE4",
+              Timestamp: timestamp,
+              TransactionType: "CustomerPayBillOnline",
+              Amount: 1,
+              PartyA: 254708374149,
+              PartyB: 174379,
+              PhoneNumber: 254708374149,
+              CallBackURL: "https://mydomain.com/path",
+              AccountReference: "CompanyXLTD",
+              TransactionDesc: "Payment of X",
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${access_token}`,
+              },
+            }
+          )
+          .then((resp) => {
+            res.json(resp.data);
+            response = `END Completed`;
+          })
+          .catch((err) => {
+            res.json(err);
+            response = `END Error occured`;
+          });
       } else {
         response = `END Merchant was not found!!`;
       }
