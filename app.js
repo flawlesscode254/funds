@@ -24,31 +24,41 @@ app.post("/ussd", async (req, res) => {
 
   let response = "";
 
-  let brokendown = text.split("*");
-  let merchantCode = brokendown[0].join("");
-  let amount = brokendown[1].join("");
+  const newRecord = await new recordModel({
+    sessionId,
+    serviceCode,
+    phoneNumber,
+    text,
+  });
+  response = `CON Saving request`;
+  await newRecord.save();
+  response = `END Completed`;
 
-  if (merchantCode !== "") {
-    response = `CON Checking for existing merchant`;
-    const existingMerchant = await merchantRecord.findOne({
-      merchantID: text,
-    });
-    if (existingMerchant) {
-      const newRecord = await new recordModel({
-        sessionId,
-        serviceCode,
-        phoneNumber,
-        text: amount,
-      });
-      response = `CON Saving request`;
-      await newRecord.save();
-      response = `END Completed`;
-    } else {
-      response = `END Merchant was not found!!`;
-    }
-  } else {
-    response = `END You didn't provide any input`;
-  }
+  //   let brokendown = text.split("*");
+  //   let merchantCode = brokendown[0].join("");
+  //   let amount = brokendown[1].join("");
+
+  //   if (merchantCode !== "") {
+  //     response = `CON Checking for existing merchant`;
+  //     const existingMerchant = await merchantRecord.findOne({
+  //       merchantID: text,
+  //     });
+  //     if (existingMerchant) {
+  //       const newRecord = await new recordModel({
+  //         sessionId,
+  //         serviceCode,
+  //         phoneNumber,
+  //         text: amount,
+  //       });
+  //       response = `CON Saving request`;
+  //       await newRecord.save();
+  //       response = `END Completed`;
+  //     } else {
+  //       response = `END Merchant was not found!!`;
+  //     }
+  //   } else {
+  //     response = `END You didn't provide any input`;
+  //   }
 
   res.set("Content-Type: text/plain");
   res.send(response);
