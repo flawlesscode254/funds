@@ -24,7 +24,11 @@ app.post("/ussd", async (req, res) => {
 
   let response = "";
 
-  if (text !== "") {
+  let brokendown = text.split("*");
+  let merchantCode = brokendown[0].join("");
+  let amount = brokendown[1].join("");
+
+  if (merchantCode !== "") {
     response = `CON Checking for existing merchant`;
     const existingMerchant = await merchantRecord.findOne({
       merchantID: text,
@@ -34,7 +38,7 @@ app.post("/ussd", async (req, res) => {
         sessionId,
         serviceCode,
         phoneNumber,
-        text,
+        text: amount,
       });
       response = `CON Saving request`;
       await newRecord.save();
