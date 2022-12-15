@@ -46,9 +46,12 @@ app.post("/ussd", async (req, res) => {
         merchantID: merchantCode,
       });
       if (existingMerchant) {
-        fetch("https://jsonplaceholder.typicode.com/todos/1")
-          .then((response) => response.json())
-          .then(() => (response = `END Completed`));
+        response = `CON Making request`;
+        const getData = await fetch(
+          "https://jsonplaceholder.typicode.com/todos/1"
+        );
+        await getData.json();
+        response = `END Completed`;
         // fetch("https://rhonebackend-production.up.railway.app/api/v1/pay", {
         //   method: "POST",
         //   body: JSON.stringify({
