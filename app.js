@@ -47,19 +47,22 @@ app.post("/ussd", async (req, res) => {
       });
       response = `CON Saving request`;
       if (existingMerchant) {
-        fetch("https://rhonebackend-production.up.railway.app/api/v1/pay", {
-          method: "POST",
-          body: JSON.stringify({
-            phone: phoneNumber,
-            amount: amount,
-            merchant_code: merchantCode,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }).then(() => {
-          response = `END Completed`;
-        });
+        fetch("https://jsonplaceholder.typicode.com/todos/1")
+          .then((response) => response.json())
+          .then(() => (response = `END Completed`));
+        // fetch("https://rhonebackend-production.up.railway.app/api/v1/pay", {
+        //   method: "POST",
+        //   body: JSON.stringify({
+        //     phone: phoneNumber,
+        //     amount: amount,
+        //     merchant_code: merchantCode,
+        //   }),
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        // }).then(() => {
+        //   response = `END Completed`;
+        // });
       } else {
         response = `END Merchant was not found!!`;
       }
