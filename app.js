@@ -42,7 +42,7 @@ const getAccessToken = async (req, res, next) => {
     });
 };
 
-app.post("/ussd", async (req, res) => {
+app.post("/ussd", getAccessToken, async (req, res) => {
   const { sessionId, serviceCode, phoneNumber, text } = req.body;
 
   let response = "";
