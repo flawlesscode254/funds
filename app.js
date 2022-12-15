@@ -44,8 +44,8 @@ app.post("/ussd", async (req, res) => {
       const existingMerchant = await merchantRecord.findOne({
         merchantID: merchantCode,
       });
+      response = `CON Saving request`;
       if (existingMerchant) {
-        response = `CON Saving request`;
         axios
           .post("https://rhonebackend-production.up.railway.app/api/v1/pay", {
             phone: phoneNumber,
