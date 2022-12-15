@@ -45,7 +45,6 @@ app.post("/ussd", async (req, res) => {
       const existingMerchant = await merchantRecord.findOne({
         merchantID: merchantCode,
       });
-      response = `CON Saving request`;
       if (existingMerchant) {
         fetch("https://jsonplaceholder.typicode.com/todos/1")
           .then((response) => response.json())
