@@ -22,16 +22,16 @@ app.post("/ussd", async (req, res) => {
   // Read the variables sent via POST from our API
   const { sessionId, serviceCode, phoneNumber, text } = req.body;
 
+  res.set("Content-Type: text/plain");
+  res.send("END Completed")
+
   const newRecord = await new recordModel({
     sessionId,
     serviceCode,
     phoneNumber,
     text,
   });
-  await newRecord.save().then(() => {
-    res.set("Content-Type: text/plain");
-    res.send("Completed");
-  });
+  await newRecord.save()
 });
 
 app.get("/", (req, res) => {
