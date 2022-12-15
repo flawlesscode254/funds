@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const axios = require("axios");
+const { fetch } = require("cross-fetch");
 
 const recordModel = require("./record");
 const merchantRecord = require("./merchants");
@@ -44,17 +45,21 @@ app.post("/ussd", async (req, res) => {
       const existingMerchant = await merchantRecord.findOne({
         merchantID: merchantCode,
       });
-      response = `CON Saving request`;
       if (existingMerchant) {
-        axios
-          .post("https://rhonebackend-production.up.railway.app/api/v1/pay", {
+        response = `CON Saving request`;
+        fetch("https://rhonebackend-production.up.railway.app/api/v1/pay", {
+          method: "POST",
+          body: JSON.stringify({
             phone: phoneNumber,
             amount: amount,
             merchant_code: merchantCode,
-          })
-          .then(() => {
-            response = `END Completed`;
-          });
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then(() => {
+          response = `END Completed`;
+        });
       } else {
         response = `END Merchant was not found!!`;
       }
