@@ -50,8 +50,11 @@ app.post("/ussd", async (req, res) => {
         const getData = await fetch(
           "https://jsonplaceholder.typicode.com/todos/1"
         );
-        await getData.json();
-        response = `END Completed`;
+        const json = await getData.json();
+        response = `CON Finishing up`;
+        if (json) {
+          response = `END Completed`;
+        }
         // fetch("https://rhonebackend-production.up.railway.app/api/v1/pay", {
         //   method: "POST",
         //   body: JSON.stringify({
