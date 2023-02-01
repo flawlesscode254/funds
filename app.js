@@ -10,7 +10,7 @@ const merchantRecord = require("./merchants");
 require("dotenv").config();
 
 mongoose.connect(
-  "mongodb://mongo:3olIA8MjCJ6wXeDNMpqw@containers-us-west-171.railway.app:6101",
+  "mongodb://mongo:1TVPwfkEBtrUvEdB3tg4@containers-us-west-61.railway.app:7142",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
