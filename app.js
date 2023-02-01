@@ -48,7 +48,7 @@ app.post("/ussd", async (req, res) => {
       if (existingMerchant) {
         response = `CON Making request`;
         const getData = await fetch(
-          "https://rhonebackend-production.up.railway.app/api/v1/pay",
+          "https://rhonpesa.online/api/v1/pay",
           {
             method: "POST",
             body: JSON.stringify({
