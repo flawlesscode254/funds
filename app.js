@@ -1,7 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const axios = require("axios");
 const { fetch } = require("cross-fetch");
 
 const recordModel = require("./record");
@@ -88,5 +87,5 @@ app.get("/", (req, res) => {
 const port = process.env.PORT;
 
 app.listen(port, async () => {
-  console.log("App started");
+  console.log(`App started on http://localhost:${port}`);
 });
