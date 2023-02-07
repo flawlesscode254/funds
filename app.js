@@ -27,6 +27,7 @@ app.post("/ussd", async (req, res) => {
   let response = "";
 
   if (text.length > 0 && text.includes("*")) {
+    console.log(text);
     let brokendown = text.split("*");
     let merchantCode = brokendown[0];
     let amount = brokendown[1];
