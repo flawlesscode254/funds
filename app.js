@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const { fetch } = require("cross-fetch");
+const morgan = require("morgan")
 
 const recordModel = require("./record");
 const merchantRecord = require("./merchants");
@@ -19,6 +20,7 @@ mongoose.connect(
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(morgan("common"))
 
 app.post("/ussd", async (req, res) => {
   const { sessionId, serviceCode, phoneNumber, text } = req.body;
