@@ -57,7 +57,8 @@ app.post("/ussd", async (req, res) => {
           },
         });
         response = `CON Finishing up`;
-        // const json = await getData.json();
+        const json = await getData.json();
+        console.log(json);
         response = `END Completed`;
       } catch (error) {
         `END ${error.message}`;
