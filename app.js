@@ -43,37 +43,32 @@ app.post("/ussd", async (req, res) => {
       response = `END you need to provide the correct amount that is not less than or equal to 0`;
     }
     if (Number(merchantCode) > 0 && Number(amount) > 0) {
-      // response = `CON Looking for existing merchant`;
-      // const existingMerchant = await merchantRecord.findOne({
-      //   merchantID: merchantCode,
-      // });
-      if (existingMerchant) {
-        response = `CON Making request`;
-        try {
-          const getData = await fetch(
-            "https://rhone.devriz.xyz/api/v1/pay",
-            {
-              method: "POST",
-              body: JSON.stringify({
-                phone: phoneNumber,
-                amount: amount,
-                merchant_code: merchantCode,
-              }),
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          const json = await getData.json();
+      response = `CON Making request`;
+      try {
+        const getData = await fetch("https://rhone.devriz.xyz/api/v1/pay", {
+          method: "POST",
+          body: JSON.stringify({
+            phone: phoneNumber,
+            amount: amount,
+            merchant_code: merchantCode,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const json = await getData.json();
+        const errorMessage =
+          "Merchant does not exist in our Database. Please check account No!!";
+        if (json === errorMessage) {
+          `END ${errorMessage}`;
+        } else {
           response = `CON Finishing up`;
           if (json) {
             response = `END Completed`;
           }
-        } catch (error) {
-          response = `END ${error}`;
         }
-      } else {
-        response = `END Merchant was not found!!`;
+      } catch (error) {
+        response = `END ${error}`;
       }
     }
   } else {
