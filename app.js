@@ -43,7 +43,6 @@ app.post("/ussd", async (req, res) => {
       response = `END you need to provide the correct amount that is not less than or equal to 0`;
     }
     if (Number(merchantCode) > 0 && Number(amount) > 0) {
-      response = `CON Making request`;
       const getData = await fetch("https://rhone.devriz.xyz/api/v1/pay", {
         method: "POST",
         body: JSON.stringify({
