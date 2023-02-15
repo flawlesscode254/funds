@@ -51,7 +51,7 @@ app.post("/ussd", async (req, res) => {
         response = `CON Making request`;
         try {
           const getData = await fetch(
-            "https://rhone-backend.vercel.app/api/v1/pay",
+            "https://rhone.devriz.xyz/api/v1/pay",
             {
               method: "POST",
               body: JSON.stringify({
