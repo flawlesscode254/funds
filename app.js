@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const { fetch } = require("cross-fetch");
-const morgan = require("morgan")
+const morgan = require("morgan");
 
 const recordModel = require("./record");
 const merchantRecord = require("./merchants");
@@ -20,7 +20,7 @@ mongoose.connect(
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(morgan("common"))
+app.use(morgan("common"));
 
 app.post("/ussd", async (req, res) => {
   const { sessionId, serviceCode, phoneNumber, text } = req.body;
@@ -49,24 +49,28 @@ app.post("/ussd", async (req, res) => {
       });
       if (existingMerchant) {
         response = `CON Making request`;
-        const getData = await fetch(
-          "https://rhonpesa.online/api/v1/pay",
-          {
-            method: "POST",
-            body: JSON.stringify({
-              phone: phoneNumber,
-              amount: amount,
-              merchant_code: merchantCode,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
+        try {
+          const getData = await fetch(
+            "https://rhone-backend.vercel.app/api/v1/pay",
+            {
+              method: "POST",
+              body: JSON.stringify({
+                phone: phoneNumber,
+                amount: amount,
+                merchant_code: merchantCode,
+              }),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          const json = await getData.json();
+          response = `CON Finishing up`;
+          if (json) {
+            response = `END Completed`;
           }
-        );
-        const json = await getData.json();
-        response = `CON Finishing up`;
-        if (json) {
-          response = `END Completed`;
+        } catch (error) {
+          response = `END ${error}`;
         }
       } else {
         response = `END Merchant was not found!!`;
