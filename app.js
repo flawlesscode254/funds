@@ -44,31 +44,26 @@ app.post("/ussd", async (req, res) => {
     }
     if (Number(merchantCode) > 0 && Number(amount) > 0) {
       response = `CON Making request`;
-      try {
-        const getData = await fetch("https://rhone.devriz.xyz/api/v1/pay", {
-          method: "POST",
-          body: JSON.stringify({
-            phone: phoneNumber,
-            amount: amount,
-            merchant_code: merchantCode,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const json = await getData.json();
-        const errorMessage =
-          "Merchant does not exist in our Database. Please check account No!!";
-        if (json === errorMessage) {
-          `END ${errorMessage}`;
-        } else {
-          response = `CON Finishing up`;
-          if (json) {
-            response = `END Completed`;
-          }
-        }
-      } catch (error) {
-        response = `END ${error}`;
+      const getData = await fetch("https://rhone.devriz.xyz/api/v1/pay", {
+        method: "POST",
+        body: JSON.stringify({
+          phone: phoneNumber,
+          amount: amount,
+          merchant_code: merchantCode,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const json = await getData.json();
+      const errorMessage =
+        "Merchant does not exist in our Database. Please check account No!!";
+      if (json === errorMessage) {
+        `END ${errorMessage}`;
+      }
+      response = `CON Finishing up`;
+      if (json) {
+        response = `END Completed`;
       }
     }
   } else {
