@@ -32,6 +32,7 @@ app.post("/ussd", async (req, res) => {
     let brokendown = text.split("*");
     let merchantCode = brokendown[0];
     let amount = brokendown[1];
+    response = `CON merchant input`;
     if (merchantCode === "" || amount === "") {
       response = `END You didn't provide any input (Merchant code together with Amount)`;
     }
@@ -53,17 +54,14 @@ app.post("/ussd", async (req, res) => {
           "Content-Type": "application/json",
         },
       });
-      const json = await getData.json();
-      console.log(json);
+      const json = await getData.json()
       if (
         json ===
         "Merchant does not exist in our Database. Please check account No!!"
       ) {
-        respond = `END Merchant does not exist in our Database. Please check account No!!`;
-        console.log("send end");
+        response = `END Merchant does not exist in our Database. Please check account No!!`;
       } else {
         response = `END Completed`;
-        console.log("completed");
       }
     }
   } else {
