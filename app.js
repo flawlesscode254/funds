@@ -55,7 +55,6 @@ app.post("/ussd", async (req, res) => {
           "Content-Type": "application/json",
         },
       });
-      response = `CON Finishing up`;
       const json = await getData.json();
       if (
         json ===
