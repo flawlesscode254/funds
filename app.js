@@ -43,10 +43,10 @@ app.post("/ussd", async (req, res) => {
       response = `END you need to provide the correct amount that is not less than or equal to 0`;
     }
     if (Number(merchantCode) > 0 && Number(amount) > 0) {
-      response = `CON Looking for existing merchant`;
-      const existingMerchant = await merchantRecord.findOne({
-        merchantID: merchantCode,
-      });
+      // response = `CON Looking for existing merchant`;
+      // const existingMerchant = await merchantRecord.findOne({
+      //   merchantID: merchantCode,
+      // });
       if (existingMerchant) {
         response = `CON Making request`;
         try {
