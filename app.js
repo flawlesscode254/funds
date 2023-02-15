@@ -55,16 +55,14 @@ app.post("/ussd", async (req, res) => {
           "Content-Type": "application/json",
         },
       });
+      response = `CON Finishing up`;
       const json = await getData.json();
       const errorMessage =
         "Merchant does not exist in our Database. Please check account No!!";
       if (json === errorMessage) {
         `END ${errorMessage}`;
       }
-      response = `CON Finishing up`;
-      if (json) {
-        response = `END Completed`;
-      }
+      response = `END Completed`;
     }
   } else {
     response = `END You didn't provide any input (Merchant code together with Amount)`;
