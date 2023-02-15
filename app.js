@@ -61,6 +61,7 @@ app.post("/ussd", async (req, res) => {
         response = `END Completed`;
       } catch (error) {
         `END ${error.message}`;
+        console.log(error);
       }
     }
   } else {
